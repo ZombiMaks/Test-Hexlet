@@ -1,29 +1,39 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php'; 
+require __DIR__ . '/vendor/autoload.php';
 
-use function Funct\Collection\firstN;
+use function \Funct\Collection\flatten;
 
 // BEGIN (write your solution here)
-function takeOldest($users, $n = 1)
+function getChildren($users) 
 {
-  $cmp = function ($a, $b) {
-  return strtotime($a['birthday']) > strtotime($b['birthday']) ? 1 : -1;
-}; 
-
-usort($users, $cmp);
-
-return firstN($users, $n);
+    $children = array_map(function ($user){
+        return $user['children'];
+    }, $users);
+    print_r(flatten($children));
 }
-// END
+
 $users = [
-    ['name' => 'Tirion', 'birthday' => '1988-11-19'],
-    ['name' => 'Sam', 'birthday' => '1999-11-22'],
-    ['name' => 'Rob', 'birthday' => '1975-01-11'],
-    ['name' => 'Sansa', 'birthday' => '2001-03-20'],
-    ['name' => 'Tisha', 'birthday' => '1992-02-27']
+    ['name' => 'Tirion', 'children' => [
+        ['name' => 'Mira', 'birdhday' => '1983-03-23']
+    ]],
+    ['name' => 'Bronn', 'children' => []],
+    ['name' => 'Sam', 'children' => [
+        ['name' => 'Aria', 'birdhday' => '2012-11-03'],
+        ['name' => 'Keit', 'birdhday' => '1933-05-14']
+    ]],
+    ['name' => 'Rob', 'children' => [
+        ['name' => 'Tisha', 'birdhday' => '2012-11-03']
+    ]],
 ];
 
-var_dump(takeOldest($users));
+getChildren($users);
+// [
+//     ['name' => 'Mira', 'birdhday' => '1983-03-23'],
+//     ['name' => 'Aria', 'birdhday' => '2012-11-03'],
+//     ['name' => 'Keit', 'birdhday' => '1933-05-14'],
+//     ['name' => 'Tisha', 'birdhday' => '2012-11-03']
+// ]
+// END
 
 
