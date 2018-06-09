@@ -4,8 +4,46 @@ require __DIR__ . '/vendor/autoload.php';
 
 use function \Funct\Collection\flatten;
 
-// BEGIN (write your solution here)
-function getChildren($users) 
+
+function getGirlFriends($users)
+{
+    $friends = array_map(function ($user){
+        return $user['friends'];
+    }, $users);
+    
+    $result = [];
+    for ($i = 0; $i < count($friends); $i++) {
+        foreach ($friends[$i] as $value){
+       $result[] = $value;
+        }
+    }
+
+    $result = array_filter($result, function ($user){
+        return $user['gender'] == 'female';
+    });
+
+     return array_values($result);
+}
+
+
+$users = [
+    ['name' => 'Tirion', 'friends' => [
+        ['name' => 'Mira', 'gender' => 'female'],
+        ['name' => 'Ramsey', 'gender' => 'male']
+    ]],
+    ['name' => 'Bronn', 'friends' => []],
+    ['name' => 'Sam', 'friends' => [
+        ['name' => 'Aria', 'gender' => 'female'],
+        ['name' => 'Keit', 'gender' => 'female']
+    ]],
+    ['name' => 'Rob', 'friends' => [
+        ['name' => 'Taywin', 'gender' => 'male']
+    ]],
+];
+
+getGirlFriends($users);
+
+/*function getChildren($users) 
 {
     $children = array_map(function ($user){
         return $user['children'];
@@ -34,6 +72,4 @@ getChildren($users);
 //     ['name' => 'Keit', 'birdhday' => '1933-05-14'],
 //     ['name' => 'Tisha', 'birdhday' => '2012-11-03']
 // ]
-// END
-
-
+*/
