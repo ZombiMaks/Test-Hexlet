@@ -5,24 +5,57 @@ require __DIR__ . '/vendor/autoload.php';
 use function \Funct\Collection\flatten;
 
 
-function getGirlFriends($users)
+function getGirlfriends(array $users)
 {
-    $friends = array_map(function ($user){
+    $friends = array_map(function ($user) {
         return $user['friends'];
     }, $users);
-    
-    $result = [];
-    for ($i = 0; $i < count($friends); $i++) {
-        foreach ($friends[$i] as $value){
-       $result[] = $value;
-        }
-    }
+    $friends = flatten($friends);
 
-    $result = array_filter($result, function ($user){
-        return $user['gender'] == 'female';
+    $girlfriends = array_filter($friends, function ($user) {
+        return $user['gender'] === 'female';
     });
+    return array_values($girlfriends);
+}
 
-     return array_values($result);
+
+$users = [
+    ['name' => 'Tirion', 'friends' => [
+        ['name' => 'Mira', 'gender' => 'female'],
+        ['name' => 'Ramsey', 'gender' => 'male']
+    ]],
+    ['name' => 'Bronn', 'friends' => []],
+    ['name' => 'Sam', 'friends' => [
+        ['name' => 'Aria', 'gender' => 'female'],
+        ['name' => 'Keit', 'gender' => 'female']
+    ]],
+    ['name' => 'Rob', 'friends' => [
+        ['name' => 'Taywin', 'gender' => 'male']
+    ]],
+];
+
+print_r(getGirlFriends($users));
+
+/*function getChildren($users) 
+{
+    $children = array_map(function ($user){<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+use function \Funct\Collection\flatten;
+
+
+function getGirlfriends(array $users)
+{
+    $friends = array_map(function ($user) {
+        return $user['friends'];
+    }, $users);
+    $friends = flatten($friends);
+
+    $girlfriends = array_filter($friends, function ($user) {
+        return $user['gender'] === 'female';
+    });
+    return array_values($girlfriends);
 }
 
 
