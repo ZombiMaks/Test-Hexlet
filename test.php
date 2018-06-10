@@ -1,108 +1,44 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
-
-use function \Funct\Collection\flatten;
-
-
-function getGirlfriends(array $users)
+function getMensCountByYear($users) 
 {
-    $friends = array_map(function ($user) {
-        return $user['friends'];
-    }, $users);
-    $friends = flatten($friends);
-
-    $girlfriends = array_filter($friends, function ($user) {
-        return $user['gender'] === 'female';
+    // фильтруем массив и отбираем мужчин(male)
+    $users = array_filter($users, function($user) {
+        return $user['gender'] == 'male';
     });
-    return array_values($girlfriends);
+    // date(Y, strtotime()) - извлекаем год рождения (1973, 1963 ....)
+    // array_key_exists - проверяем присутствие элемента в массиве
+    // считаем количество мужчин по годам
+    $bigUserNum = array_reduce($users, function ($acc, $user) {
+        if (array_key_exists((date("Y", strtotime($user['birthday']))), $acc)) {
+            $acc[(date("Y", strtotime($user['birthday'])))] += 1;
+        }else {
+            $acc[(date("Y", strtotime($user['birthday'])))] = 1; 
+        }
+        return $acc;
+    }, []);
+    return $bigUserNum;
 }
 
-
-$users = [
-    ['name' => 'Tirion', 'friends' => [
-        ['name' => 'Mira', 'gender' => 'female'],
-        ['name' => 'Ramsey', 'gender' => 'male']
-    ]],
-    ['name' => 'Bronn', 'friends' => []],
-    ['name' => 'Sam', 'friends' => [
-        ['name' => 'Aria', 'gender' => 'female'],
-        ['name' => 'Keit', 'gender' => 'female']
-    ]],
-    ['name' => 'Rob', 'friends' => [
-        ['name' => 'Taywin', 'gender' => 'male']
-    ]],
+ $users = [
+    ['name' => 'Bronn', 'gender' => 'male', 'birthday' => '1973-03-23'],
+    ['name' => 'Reigar', 'gender' => 'male', 'birthday' => '1973-11-03'],
+    ['name' => 'Eiegon',  'gender' => 'male', 'birthday' => '1963-11-03'],
+    ['name' => 'Sansa', 'gender' => 'female', 'birthday' => '2012-11-03'],
+    ['name' => 'Jon', 'gender' => 'male', 'birthday' => '1980-11-03'],
+    ['name' => 'Robb','gender' => 'male', 'birthday' => '1980-05-14'],
+    ['name' => 'Tisha', 'gender' => 'female', 'birthday' => '2012-11-03'],
+    ['name' => 'Rick', 'gender' => 'male', 'birthday' => '2012-11-03'],
+    ['name' => 'Joffrey', 'gender' => 'male', 'birthday' => '1999-11-03'],
+    ['name' => 'Edd', 'gender' => 'male', 'birthday' => '1973-11-03']
 ];
 
-print_r(getGirlFriends($users));
+print_r(getMensCountByYear($users));
 
-/*function getChildren($users) 
-{
-    $children = array_map(function ($user){<?php
-
-require __DIR__ . '/vendor/autoload.php';
-
-use function \Funct\Collection\flatten;
-
-
-function getGirlfriends(array $users)
-{
-    $friends = array_map(function ($user) {
-        return $user['friends'];
-    }, $users);
-    $friends = flatten($friends);
-
-    $girlfriends = array_filter($friends, function ($user) {
-        return $user['gender'] === 'female';
-    });
-    return array_values($girlfriends);
-}
-
-
-$users = [
-    ['name' => 'Tirion', 'friends' => [
-        ['name' => 'Mira', 'gender' => 'female'],
-        ['name' => 'Ramsey', 'gender' => 'male']
-    ]],
-    ['name' => 'Bronn', 'friends' => []],
-    ['name' => 'Sam', 'friends' => [
-        ['name' => 'Aria', 'gender' => 'female'],
-        ['name' => 'Keit', 'gender' => 'female']
-    ]],
-    ['name' => 'Rob', 'friends' => [
-        ['name' => 'Taywin', 'gender' => 'male']
-    ]],
-];
-
-getGirlFriends($users);
-
-/*function getChildren($users) 
-{
-    $children = array_map(function ($user){
-        return $user['children'];
-    }, $users);
-    print_r(flatten($children));
-}
-
-$users = [
-    ['name' => 'Tirion', 'children' => [
-        ['name' => 'Mira', 'birdhday' => '1983-03-23']
-    ]],
-    ['name' => 'Bronn', 'children' => []],
-    ['name' => 'Sam', 'children' => [
-        ['name' => 'Aria', 'birdhday' => '2012-11-03'],
-        ['name' => 'Keit', 'birdhday' => '1933-05-14']
-    ]],
-    ['name' => 'Rob', 'children' => [
-        ['name' => 'Tisha', 'birdhday' => '2012-11-03']
-    ]],
-];
-
-getChildren($users);
-// [
-//     ['name' => 'Mira', 'birdhday' => '1983-03-23'],
-//     ['name' => 'Aria', 'birdhday' => '2012-11-03'],
-//     ['name' => 'Keit', 'birdhday' => '1933-05-14'],
-//     ['name' => 'Tisha', 'birdhday' => '2012-11-03']
-// ]
-*/
+# => Array (
+#     1973 => 3,
+#     1963 => 1,
+#     1980 => 2,
+#     2012 => 1,
+#     1999 => 1
+# );
