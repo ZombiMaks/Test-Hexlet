@@ -1,41 +1,24 @@
 <?php
 
-function getFirstMenWithLessFriends($users) {
-    // проверяем на пустоту
-   if (empty($users)){
-       return null;
-   }
-  
-   $minFriends = array_reduce($users, function ($acc, $user){
-       // проверяем на пустоту $acc и добавляем $user 
-       if (empty($acc)){
-           $acc = $user;
-       }
-       // находим первого пользователя с меньшим количеством друзей
-       if (count($user['friends']) < count($acc['friends'])){
-          $acc = $user;
-       }
-       return $acc;
-   }, []);
 
-   return $minFriends;
+function findIndexOfNearest(array $items, $value)
+{
+    if (sizeof($items) === 0) {
+        return null;
+    }
+
+    return array_reduce(array_keys($items), function ($acc, $i) use ($items, $value) {
+        return abs($items[$i] - $value) < abs($items[$acc] - $value) ? $i : $acc;
+    }, 0);
 }
 
-$users = [
-    ['name' => 'Tirion', 'friends' => [
-        ['name' => 'Mira', 'gender' => 'female'],
-        ['name' => 'Ramsey', 'gender' => 'male']
-    ]],
-    ['name' => 'Bronn', 'friends' => []],
-    ['name' => 'Sam', 'friends' => [
-        ['name' => 'Aria', 'gender' => 'female'],
-        ['name' => 'Keit', 'gender' => 'female']
-    ]],
-    ['name' => 'Keit', 'friends' => []],
-    ['name' => 'Rob', 'friends' => [
-        ['name' => 'Taywin', 'gender' => 'male']
-    ]],
-];
 
-print_r(getFirstMenWithLessFriends($users));
-// => ['name' => 'Bronn', 'friends' => []];
+print_r(findIndexOfNearest([], 2)); // => null
+print_r(findIndexOfNearest([10], 0)); // => 2
+print_r(findIndexOfNearest([10, 15, 17, 19, 25, 30], 20));
+print_r(findIndexOfNearest([15, 10, 3, -5], -2));
+
+/*$this->assertNull(findIndexOfNearest([], 2));
+$this->assertEquals(0, findIndexOfNearest([10], 0));
+$this->assertEquals(1, findIndexOfNearest([10, 15], 20));
+$this->assertEquals(3, findIndexOfNearest([15, 10, 3, -5]-2));*/
