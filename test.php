@@ -2,10 +2,10 @@
 
 function without(array $items, $value)
 {
-    $value = func_get_args();
-    array_shift($value);
-    $filtered = array_diff($items, $value);
-    return array_values($filtered);
+    $value = func_get_args(); // Возвращает массив, содержащий аргументы функции
+    array_shift($value); // Извлекает первый элемент массива
+    $filtered = array_diff($items, $value); // Вычислить расхождение массивов
+    return array_values($filtered); // Сбрасываем ключи
 }
 
 
