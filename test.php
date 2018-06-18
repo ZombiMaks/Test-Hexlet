@@ -1,41 +1,20 @@
 <?php
 
-function getFirstMenWithLessFriends($users) {
-    // проверяем на пустоту
-   if (empty($users)){
-       return null;
-   }
-  
-   $minFriends = array_reduce($users, function ($acc, $user){
-       // проверяем на пустоту $acc и добавляем $user 
-       if (empty($acc)){
-           $acc = $user;
-       }
-       // находим первого пользователя с меньшим количеством друзей
-       if (count($user['friends']) < count($acc['friends'])){
-          $acc = $user;
-       }
-       return $acc;
-   }, []);
-
-   return $minFriends;
+function without(array $items, $value)
+{
+    $value = func_get_args();
+    array_shift($value);
+    $filtered = array_diff($items, $value);
+    return array_values($filtered);
 }
 
-$users = [
-    ['name' => 'Tirion', 'friends' => [
-        ['name' => 'Mira', 'gender' => 'female'],
-        ['name' => 'Ramsey', 'gender' => 'male']
-    ]],
-    ['name' => 'Bronn', 'friends' => []],
-    ['name' => 'Sam', 'friends' => [
-        ['name' => 'Aria', 'gender' => 'female'],
-        ['name' => 'Keit', 'gender' => 'female']
-    ]],
-    ['name' => 'Keit', 'friends' => []],
-    ['name' => 'Rob', 'friends' => [
-        ['name' => 'Taywin', 'gender' => 'male']
-    ]],
-];
 
-print_r(getFirstMenWithLessFriends($users));
-// => ['name' => 'Bronn', 'friends' => []];
+print_r(without([3, 4, 10, 4, 'true'], 4)); // => [3, 10, 'true']
+print_r(without(['3', 2], 0, 5, 11)); // => ['3', 2]
+//$this->assertEquals([], 
+print_r(without([], null));
+//$this->assertEquals([3, 10, 'true'],
+print_r(without([3, 4, 10, 4, 'true'], 4));
+print_r(without(['wow', 3, 4, 10, 4, 'true'], null, 4));
+print_r(without([3, 4, 10, 'true'], 3, 4));
+print_r(without(['3', 2], 0, 5));
