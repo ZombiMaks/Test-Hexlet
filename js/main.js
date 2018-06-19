@@ -1,13 +1,45 @@
+const length = str => str.length;
+const toUpperCase = str => str.toUpperCase();
 
-const square = ($num) => $num * $num;
-// возвращает сумму квадратов двух чисел
-const sumOfSquares = ($num, $num2) => square($num) + square($num2);
-// возвращает квадрат суммы квадратов двух чисел
-const squareSumOfSquares = ($num, $num2) => square(sumOfSquares($num, $num2));
+const bigLettersCount = (str) => {
+  // BEGIN (write your solution here)
+  let result = 0;
+  let i = 0;
+  while (i < length){
+    if (str[i] === toUpperCase[i]){
+      result += 1;
+    }
+  }
+  return result;
+  // END
+};
 
-console.log(square(5)); // 25)
-console.log(square(10)); // 100
-console.log(sumOfSquares(5, 10)); // 125
-console.log(sumOfSquares(10, -9)); // 181
-console.log(squareSumOfSquares(1, 1)); // 4
-console.log(squareSumOfSquares(2, 3)); // 169
+
+const compare = (first, second) => {
+  const firstCount = bigLettersCount(first);
+  const secondCount = bigLettersCount(second);
+
+  // BEGIN (write your solution here)
+  if (firstCount > secondCount){
+    return 1;
+  }else if (firstCount < secondCount){
+    return -1;
+  }else{
+    return 0;
+  }
+  // END
+};
+
+export const greaterThan = (first, second) =>
+  compare(first, second) === 1;
+
+export const lessThan = (first, second) =>
+  compare(first, second) === -1;
+
+export const isEqual = (first, second) =>
+  compare(first, second) === 0;
+
+greaterThan('AD', 'ad sd'); // true, сравнение на > (больше)
+greaterThan('AD', '   Ad sd'); // false, сравнение на > (больше)
+lessThan('ghe df', 'dfwe r D'); // true, сравнение на < (меньше)
+isEqual('liSp', 'lisP'); // true
