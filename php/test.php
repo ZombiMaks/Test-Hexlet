@@ -6,14 +6,12 @@ function getSameParity($array)
         return [];
     }
 
-    $filter = [];
-    foreach ($array as $value){
-        // abs - модуль числа
-        if (abs($value % 2) == (abs($array[0])) % 2) {
-            $filter[] = $value; 
-        }
-    }
-  return $filter;    
+    $obsolut = (abs($array[0])) % 2;
+
+    $filters = array_filter($array, function ($filter) use ($obsolut) {
+        return abs($filter % 2) == $obsolut;
+    });
+  return $filters;    
 
 }
 
