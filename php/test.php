@@ -1,12 +1,30 @@
 <?php
+/*
+Реализуйте функцию getQuadrant, которая вычисляет квадрант, в котором находится точка. Ниже приведена схема, показывающая номера квадрантов на плоскости.
 
-function calculateDistance($point1, $point2) {
-    // вычесляем растояние по теореме Пифагора
-    // hypot — Рассчитывает длину гипотенузы прямоугольного треугольника
-    $hypotenuse = hypot($point1[0] - $point2[0], $point1[1] - $point2[1]);
-    return $hypotenuse;
+        +
+      2 | 1
+        |
++----------------+
+        |
+      3 | 4
+        +
+*/
+
+function getQuadrant($point)
+{
+    if ($point['x'] > 0 && $point['y'] < 0){
+        return 4;
+    }elseif($point['x'] > 0 && $point['y'] > 0){
+        return 1;
+    }elseif($point['x'] < 0 && $point['y'] < 0){
+        return 3;
+    }elseif($point['x'] < 0 && $point['y'] > 0){
+        return 2;
+    }else{
+        return null;
+    }
 }
 
-$point1 = [0, 0];
-$point2 = [3, 4];
-print_r(calculateDistance($point1, $point2)); // => 5
+$point1 = ['x' => 3, 'y' => 4];
+print_r(getQuadrant($point1)); // => 1
