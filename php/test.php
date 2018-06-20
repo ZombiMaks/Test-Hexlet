@@ -1,19 +1,12 @@
 <?php
 
-function getSameParity($array)
-{
-    if (empty($array)){
-        return [];
-    }
-
-    $obsolut = (abs($array[0])) % 2;
-
-    $filters = array_filter($array, function ($filter) use ($obsolut) {
-        return abs($filter % 2) == $obsolut;
-    });
-  return $filters;    
-
+function calculateDistance($point1, $point2) {
+    // вычесляем растояние по теореме Пифагора
+    // hypot — Рассчитывает длину гипотенузы прямоугольного треугольника
+    $hypotenuse = hypot($point1[0] - $point2[0], $point1[1] - $point2[1]);
+    return $hypotenuse;
 }
 
-print_r(getSameParity([2, 0, 1, -3, 10, -2])); // => []
-print_r(getSameParity([-1, 0, 1, -3, 10, -2])); // => [-1, 1, -3]
+$point1 = [0, 0];
+$point2 = [3, 4];
+print_r(calculateDistance($point1, $point2)); // => 5
