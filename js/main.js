@@ -1,45 +1,26 @@
-const length = str => str.length;
-const toUpperCase = str => str.toUpperCase();
 
-const bigLettersCount = (str) => {
-  // BEGIN (write your solution here)
-  let result = 0;
-  let i = 0;
-  while (i < length){
-    if (str[i] === toUpperCase[i]){
-      result += 1;
+const addDigits = (num) => {
+  let suma = String(num);
+  while (suma.length > 1){
+    let sum = 0;
+    for (let i = 0; i < suma.length; i++){
+       sum += Number(suma[i]);
     }
+    suma = String(sum);
   }
-  return result;
-  // END
-};
+  return Number(suma);
+}
 
+//export default addDigits;
 
-const compare = (first, second) => {
-  const firstCount = bigLettersCount(first);
-  const secondCount = bigLettersCount(second);
-
-  // BEGIN (write your solution here)
-  if (firstCount > secondCount){
-    return 1;
-  }else if (firstCount < secondCount){
-    return -1;
-  }else{
-    return 0;
-  }
-  // END
-};
-
-export const greaterThan = (first, second) =>
-  compare(first, second) === 1;
-
-export const lessThan = (first, second) =>
-  compare(first, second) === -1;
-
-export const isEqual = (first, second) =>
-  compare(first, second) === 0;
-
-greaterThan('AD', 'ad sd'); // true, сравнение на > (больше)
-greaterThan('AD', '   Ad sd'); // false, сравнение на > (больше)
-lessThan('ghe df', 'dfwe r D'); // true, сравнение на < (меньше)
-isEqual('liSp', 'lisP'); // true
+console.log(addDigits(19)); // 1
+/*
+expect(addDigits(0)).toBe(0);
+expect(addDigits(5)).toBe(5);
+expect(addDigits(10)).toBe(1);
+expect(addDigits(19)).toBe(1);
+expect(addDigits(38)).toBe(2);
+expect(addDigits(1259)).toBe(8);
+expect(addDigits(598997686567)).toBe(4);
+expect(addDigits(999999999999)).toBe(9);
+*/
