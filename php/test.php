@@ -1,30 +1,40 @@
 <?php
 /*
-Реализуйте функцию getQuadrant, которая вычисляет квадрант, в котором находится точка. Ниже приведена схема, показывающая номера квадрантов на плоскости.
+Реализуйте указанные ниже функции:
 
-        +
-      2 | 1
-        |
-+----------------+
-        |
-      3 | 4
-        +
+makeSegment. Принимает на вход две точки и возвращает отрезок.
+getMidpointOfSegment. Принимает на вход отрезок и возвращает точку находящуюся на середине отрезка.
+Средняя точка вычисляется по формуле x = (x1 + x2) / 2 и y = (y1 + y2) / 2.
 */
 
-function getQuadrant($point)
+function makeSegment($point1, $point2)
 {
-    if ($point['x'] > 0 && $point['y'] < 0){
-        return 4;
-    }elseif($point['x'] > 0 && $point['y'] > 0){
-        return 1;
-    }elseif($point['x'] < 0 && $point['y'] < 0){
-        return 3;
-    }elseif($point['x'] < 0 && $point['y'] > 0){
-        return 2;
-    }else{
-        return null;
-    }
+    return  [   
+                'point1' => $point1,
+                'point2' => $point2
+    ];
 }
 
-$point1 = ['x' => 3, 'y' => 4];
-print_r(getQuadrant($point1)); // => 1
+function makeDecartPoint($x, $y)
+{
+    return [
+        'x' => $x,
+        'y' => $y
+    ];
+}
+
+function getMidpointOfSegment($segment)
+{
+    //x = (x1 + x2) / 2 
+    $x = ($segment['point1']['x'] + $segment['point2']['x']) / 2;
+    //y = (y1 + y2) / 2.
+    $y = ($segment['point1']['y'] + $segment['point2']['y']) / 2;
+
+   return [
+       'x' => $x,
+       'y' => $y
+    ];
+}
+
+$segment = makeSegment(makeDecartPoint(3, 2), makeDecartPoint(0, 0));
+print_r(getMidpointOfSegment($segment)); // => (1.5, 1)
