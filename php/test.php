@@ -1,40 +1,37 @@
 <?php
 /*
-Реализуйте указанные ниже функции:
-
-makeSegment. Принимает на вход две точки и возвращает отрезок.
-getMidpointOfSegment. Принимает на вход отрезок и возвращает точку находящуюся на середине отрезка.
-Средняя точка вычисляется по формуле x = (x1 + x2) / 2 и y = (y1 + y2) / 2.
+Реализуйте интерфейсные фунции точек:
+makeDecartPoint. Принимает на вход координаты и возвращает точку. Уже реализован.
+getX
+getY
+Получить x можно по формуле radius * cos(angle)
+Получить y можно по формуле radius * sin(angle)
 */
-
-function makeSegment($point1, $point2)
-{
-    return  [   
-                'point1' => $point1,
-                'point2' => $point2
-    ];
-}
 
 function makeDecartPoint($x, $y)
 {
-    return [
-        'x' => $x,
-        'y' => $y
-    ];
+     return [
+         'angle' => atan2($y, $x),
+         'radius' => sqrt($x ** 2 + $y ** 2)
+     ];
 }
 
-function getMidpointOfSegment($segment)
+function getX($point)
 {
-    //x = (x1 + x2) / 2 
-    $x = ($segment['point1']['x'] + $segment['point2']['x']) / 2;
-    //y = (y1 + y2) / 2.
-    $y = ($segment['point1']['y'] + $segment['point2']['y']) / 2;
-
-   return [
-       'x' => $x,
-       'y' => $y
-    ];
+    return  $point['radius'] * cos($point['angle']);
 }
 
-$segment = makeSegment(makeDecartPoint(3, 2), makeDecartPoint(0, 0));
-print_r(getMidpointOfSegment($segment)); // => (1.5, 1)
+function getY($point)
+{
+  return  $point['radius'] * sin($point['angle']);
+}
+
+$x = 4;
+$y = 8;
+
+// $point хранит в себе данные в полярной системе координат
+$point = makeDecartPoint($x, $y);
+
+// Здесь происходит преобразование из полярной в декартову
+print_r(getX($point)); // 4
+print_r(getY($point)); // 8
