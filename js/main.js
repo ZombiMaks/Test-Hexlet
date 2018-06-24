@@ -1,19 +1,25 @@
 
 /*
-Напишите функцию diff, которая принимает два угла (integer), каждый от 0 до 360, и возвращает наименьшую разницу между ними.
+Реализуйте и экспортируйте по умолчанию функцию invertCase, которая меняет в строке регистр каждой буквы на противоположный.
 */
 
-function diff(corner1, corner2){
-  // разница между передаными углами
-  const x = Math.abs(corner1 - corner2);
-  // разница между передаными углами и окружностью(360)
-  const y = 360 - x;
-  // проверяем на наименьший угол
-  const result = x <= y ? x: y;
-  return result;
+const length = str => str.length;
+const toUpperCase = str => str.toUpperCase();
+const toLowerCase = str => str.toLowerCase();
+
+const invertCase = (str) => {
+  let differentReg = '';
+  for (let i = 0; i < length(str); i++){
+    if (str[i] ===  toUpperCase(str[i])){
+      differentReg += toLowerCase(str[i]);
+    }else{
+    differentReg += toUpperCase(str[i]);
+    }
+  }
+  return differentReg;
 }
 
-console.log(diff(0, 45)); // === 45; не 315, а 45, потому что 45 меньше
-console.log(diff(0, 180)); // === 180;
-console.log(diff(0, 190)); // === 170; не 190, а 170, потому что 170 меньше
-console.log(diff(120, 280)); // === 160
+//export default invertCase;
+
+console.log(invertCase('Hello, World!')); // hELLO, wORLD!
+console.log(invertCase('I loVe JS')); // i LOvE js
