@@ -1,19 +1,19 @@
 
 /*
-Реализуйте и экспортируйте по умолчанию функцию, которая делает заглавной первую букву каждого слова в предложении.
+Напишите функцию diff, которая принимает два угла (integer), каждый от 0 до 360, и возвращает наименьшую разницу между ними.
 */
 
-function solution(str) {
-  let result = '';
-  for (let i = 0; i < str.length; i++){
-    if (str[i - 1] == ' ' || str[i] == str[0] && str[i] != ' ' ){
-      result += str[i].toUpperCase();
-      //console.log(str[i]);
-    }else{
-      result += str[i];
-    }
-  }
+function diff(corner1, corner2){
+  // разница между передаными углами
+  const x = Math.abs(corner1 - corner2);
+  // разница между передаными углами и окружностью(360)
+  const y = 360 - x;
+  // проверяем на наименьший угол
+  const result = x <= y ? x: y;
   return result;
 }
 
-console.log(solution(' hello, world!')); // Hello, World!
+console.log(diff(0, 45)); // === 45; не 315, а 45, потому что 45 меньше
+console.log(diff(0, 180)); // === 180;
+console.log(diff(0, 190)); // === 170; не 190, а 170, потому что 170 меньше
+console.log(diff(120, 280)); // === 160
