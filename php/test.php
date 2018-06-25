@@ -1,124 +1,55 @@
 <?php
 /*
-Реализуйте абстракцию (набор функций) для работы с прямоугольниками, стороны которого всегда параллельны осям. Прямоугольник может располагаться в любом месте координатной плоскости.
+Реализуйте абстракцию для работы с рациональными числами включающую в себя следующие функции:
 
-При такой постановке, достаточно знать только три параметра для однозначного задания прямоугольника на плоскости: координаты левой-верхней точки, ширину и высоту. Зная их, мы всегда можем построить прямоугольник одним единственным способом.
-
-      |
-    4 |    точка   ширина
-      |       *-------------
-    3 |       |            |
-      |       |            | высота
-    2 |       |            |
-      |       --------------
-    1 |
-      |
-------|---------------------------
-    0 |  1   2   3   4   5   6   7
-      |
-      |
-      |
-Основной интерфейс:
-
-makeRectangle (конструктор) - создает прямоугольник. Принимает параметры: левую-верхнюю точку, ширину и высоту.
-Селекторы getStartPoint, getWidth и getHeight
-
-isContainsTheOrigin - проверяет, принадлежит ли центр координат прямоугольнику (не лежит на границе прямоугольника, а находится внутри). Чтобы в этом убедиться, достаточно проверить, что все точки прямоугольника лежат в разных квадрантах (их можно высчитать в момент проверки).
+Конструктор makeRational - принимает на вход числитель и знаменатель, возвращает дробь.
+Селектор getNumer - возвращает числитель
+Селектор getDenom - возвращает знаменатель
+Сложение add - складывает переданные дроби
+Вычитание sub - находит разность между двумя дробями
+Не забудьте реализовать нормализацию дробей удобным для вас способом
 */
 
-// Создание прямоугольника:
-// p - левая верхняя точка
-// 4 - ширина
-// 5 - высота
-//
-// p    4
-// -----------
-// |         |
-// |         | 5
-// |         |
-// -----------
-
-// получаем точки и выводим массив(коардинаты точки)
-function makeDecartPoint($x, $y)
+// Функция gcd находит наибольший общий делитель двух чисел
+function gcd($a, $b)
 {
-    return [
-        'x' => $x,
-        'y' => $y
-    ];
-}
-// коардинат по Х
-function getX($point)
-{
-    return $point['x'];
-}
-// коардинат по У
-function getY($point)
-{
-    return $point['y'];
-}
-//проверяем в коких квадрантах лежат точки(вершины)
-function getQuadrant($point)
-{
-    $x = $point['x'];
-    $y = $point['y'];
-
-    if ($x > 0 && $y > 0) {
-        return 1;
-    } elseif ($x < 0 && $y > 0) {
-        return 2;
-    } elseif ($x < 0 && $y < 0) {
-        return 3;
-    } elseif ($x > 0 && $y < 0) {
-        return 4;
-    }
-
-    return null;
-};
-
-function makeRectangle($p, $width, $height)
-{
-    $leftTopPoint = getStartPoint($p);
-    $getWidth = getWidth($p, $width);
-    $getHeigth = getHeight($p, $height);
-    return [ $p, $getWidth, $getHeigth];
-} 
-
-function getStartPoint($p) 
-{
-    return $p;
+    return ($a % $b) ? gcd($b, $a % $b) : $b;
 }
 
-function getHeight($p, $height){
-
-    return [
-        'x' => $p['x'], 
-        'y' => $p['y'] - $height
-    ];
-}
-
-function getWidth($p, $width)
+function  makeRational($numer, $denom)
 {
-    return [
-        'x' => $p['x'] + $width, 
-        'y' => $p['y']
-    ];
+    $comonDevisor = gcd($numer, $denom);
+    $a = $numer / $comonDevisor;
+    $b = $denom / $comonDevisor;
+    return "{$a}/{$b}"; 
 }
 
-function isContainsTheOrigin($rectangle)
+function getNumer($rat1)
 {
-    $p1 = getQuadrant($rectangle[0]);
-    $p2= getQuadrant($rectangle[1]);
-    $p3 = getQuadrant($rectangle[2]);
-    if ($p1 === $p2 || $p1 === $p3 || $p2 === $p3){
-        return false;
-    }else{
-        return true;
-    }
+    return explode('/', $rat1)[0];;
 }
 
-$p = makeDecartPoint(0, 1);
-$rectangle = makeRectangle($p, 4, 5);
-print_r(isContainsTheOrigin($rectangle)); // false
+function getDenom($rat1)
+{
+    return explode('/', $rat1)[1];;
+}
 
-$rectangle2 = makeRectangle(makeDecartPoint(-4, 3), 5, 4);
-print_r(isContainsTheOrigin($rectangle2)); // true
+function add($rat1, $rat2) 
+{
+    $sumNumer = getNumer($rat1) * getDenom($rat2) + getNumer($rat2) * getDenom($rat1);
+    return makeRational($sumNumer, getdenom($rat1) * getDenom($rat2));
+}
+
+function sub($rat1, $rat2)
+{
+    $sumNumer = getNumer($rat1) * getDenom($rat2) - getNumer($rat2) * getDenom($rat1);
+    return makeRational($sumNumer, getdenom($rat1) * getDenom($rat2));
+}
+
+$rat1 = makeRational(3, 9);
+//print_r(getNumer($rat1)); // => 1
+//print_r(getDenom($rat1)); // => 3
+
+$rat2 = makeRational(10, 3);
+print_r(add($rat1, $rat2)); // => 11/3
+print_r(sub($rat1, $rat2)); // => -3/1
