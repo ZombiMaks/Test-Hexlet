@@ -1,25 +1,26 @@
 
 /*
-Реализуйте и экспортируйте по умолчанию функцию invertCase, которая меняет в строке регистр каждой буквы на противоположный.
+Реализуйте и экспортируйте по умолчанию функцию reverseInt, которая переворачивает цифры в переданном числе и возвращает новое число.
 */
 
+const identity = str => str;
 const length = str => str.length;
-const toUpperCase = str => str.toUpperCase();
-const toLowerCase = str => str.toLowerCase();
 
-const invertCase = (str) => {
-  let differentReg = '';
-  for (let i = 0; i < length(str); i++){
-    if (str[i] ===  toUpperCase(str[i])){
-      differentReg += toLowerCase(str[i]);
-    }else{
-    differentReg += toUpperCase(str[i]);
+function reverseInt(num){
+  const str = String(num);
+  let numRevers = '';
+  if (str[0] === '-'){
+      numRevers += str[0];
+    }
+  for (let i = length(str) - 1; i >= 0; i--){
+    if (str[i] !== '-'){
+      numRevers += str[i];
     }
   }
-  return differentReg;
+  return Number(numRevers);
 }
 
-//export default invertCase;
+export default reverseInt;
 
-console.log(invertCase('Hello, World!')); // hELLO, wORLD!
-console.log(invertCase('I loVe JS')); // i LOvE js
+console.log(reverseInt(13)); // 31
+console.log(reverseInt(-123)); // -321
