@@ -1,26 +1,26 @@
 
 /*
-Реализуйте и экспортируйте по умолчанию функцию reverseInt, которая переворачивает цифры в переданном числе и возвращает новое число.
+Сумма квадратов первых десяти натуральных чисел это 12 + 22 + 32 + ... + 10 2 = 385.
+
+Квадрат суммы первых десяти натуральных чисел это (1 + 2 + 3 + ... + 10)2 = 552 = 3025.
+
+Разница между квадратом суммы и суммой квадратов первых десяти натуральных чисел: 3025 − 385 = 2640.
+
+Напишите функцию sumSquareDifference, которая принимает аргумент n и возвращает разницу между квадратом суммы и суммой квадратов первых n натуральных чисел.
 */
 
-const identity = str => str;
-const length = str => str.length;
-
-function reverseInt(num){
-  const str = String(num);
-  let numRevers = '';
-  if (str[0] === '-'){
-      numRevers += str[0];
-    }
-  for (let i = length(str) - 1; i >= 0; i--){
-    if (str[i] !== '-'){
-      numRevers += str[i];
-    }
-  }
-  return Number(numRevers);
+const sumSquareDifference = (n) => {
+  // сумма квадратов
+   let sumSquare = 0;
+  // квадрат суммы
+   let squareSum = 0;
+   let i = 0;
+   while (i <= n){
+     sumSquare += Math.pow(i, 2);
+     squareSum += i;
+     i++;
+   }
+   return Math.pow(squareSum, 2) - sumSquare;
 }
 
-export default reverseInt;
-
-console.log(reverseInt(13)); // 31
-console.log(reverseInt(-123)); // -321
+console.log(sumSquareDifference(10));
