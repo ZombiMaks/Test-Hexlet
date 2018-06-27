@@ -1,27 +1,33 @@
 <?php
 /*
-Реализуйте функцию dup, которая клонирует переданную точку. Под клонированием подразумевается процесс создания нового объекта, с такими же данными как и у старого.
+Реализуйте функцию compare, которая сравнивает переданных пользователей на основе идентификатора. Эта функция должна убедиться что переданные объекты - пользователи.
 */
-
-class Point
+class User
 {
-    public $x;
-    public $y;
-}
-
-function dup($point1)
-{
-    $pointer = clone $point1;
-   return $pointer;        
+    public $id;
+    public $name;
 }
 
 
-$point1 = new Point();
-$point1->x = 3;
-$point1->y = 5;
-$point2 = dup($point1);
-print_r($point2);
-print_r($point1);
+function compare($user1, $user2)
+{
+   $checkUser1 = get_class($user1);
+   $checkUser2 = get_class($user2);
 
-print_r($point1 == $point2); // true
-print_r($point1 === $point2); // false
+   return $checkUser1 === $checkUser2 && $user1->id === $user2->id;      
+}
+
+
+$user1 = new User();
+$user1->id = 1;
+$user1->name = 'Petr';
+
+$user2 = new User();
+$user2->id = 1;
+$user2->name = 'Ignat';
+
+$user3 = new User();
+$user3->id = 2;
+
+print_r(compare($user1, $user2));
+print_r(compare($user1, $user3)); // => true
