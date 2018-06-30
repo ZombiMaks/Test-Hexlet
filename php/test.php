@@ -1,9 +1,17 @@
 <?php
 /*
-Реализуйте класс App\Segment с двумя публичными свойствами beginPoint и endPoint. Определите в классе конструктор.
-Реализуйте функцию reverse, которая принимает на вход сегмент и возвращает новый, с точками добавленными в обратном порядке (begin меняется местами со end). Точки должны быть клонированы.
+Реализуйте класс для работы с рациональными числами, включающую в себя следующие методы:
+
+Конструктор — принимает на вход числитель и знаменатель.
+Метод getNumer — возвращает числитель
+Метод getDenom — возвращает знаменатель
+Сложение add — складывает переданные дроби
+Вычитание sub — находит разность между двумя дробями
+Нормализацию делать не надо!
+
+Подобные абстракции, как правило, создаются неизменяемыми. Поэтому сделайте так, чтобы методы add и sub возвращали новое рациональное число, а не мутировали объект.
 */
-class Point
+class Rational
 {
     public $x;
     public $y;
@@ -13,30 +21,44 @@ class Point
         $this->x = $x;
         $this->y = $y;
     }
-}
 
-class Segment
-{
-        public $beginPoint;
-        public $endPoint;
-    
-    public function __construct($beginPoint, $endPoint)
+    public function getNumer()
     {
-       $this->beginPoint = $beginPoint;
-       $this->endPoint = $endPoint;
+        return $this->x;
     }
-}
-function reverse($segment)
-{
-    $cloned = clone $segment;
-    $cloned->beginPoint = clone $segment->endPoint;
-    $cloned->endPoint = clone $segment->beginPoint;
-    return $cloned;
+    public function getDenom()
+    {
+        return $this->y;
+    }
+
+    public function add($rat2)
+    {
+        $numer = ($this->getNumer() * $rat2->getDenom()) + ($this->getDenom() * $rat2->getNumer());
+        $denom = $this->getDenom() * $rat2->getDenom();
+        return new Rational($numer, $denom);
+    } 
+    
+    public function sub($rat2)
+    {
+        $numer = ($this->getNumer() * $rat2->getDenom()) - ($this->getDenom() * $rat2->getNumer());
+        $denom = $this->getDenom() * $rat2->getDenom();
+        return new Rational($numer, $denom);
+    }  
 }
 
-$segment = new Segment(new Point(1, 10), new Point(11, -3));
-//print_r($segment);
-$reversedSegment = reverse($segment);
+$rat1 = new Rational(3, 9);
+$rat1->getNumer(); // => 3
+$rat1->getDenom(); // => 9
 
-print_r($reversedSegment->beginPoint); // => (11, -3)
-print_r($reversedSegment->endPoint); // => (1, 10)
+$rat2 = new Rational(10, 3);
+
+$rat3 = $rat1->add($rat2); // => Абстракция для рационального числа 99/27
+print_r($rat3);
+$rat3->getNumer();         // => 99
+$rat3->getDenom();         // => 27
+
+$rat4 = $rat1->sub($rat2); // => Абстракция для рационального числа -81/27
+$rat4->getNumer();         // => -81
+$rat4->getDenom();
+
+print_r($rat4);// => 27
