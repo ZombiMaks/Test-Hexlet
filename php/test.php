@@ -1,33 +1,42 @@
 <?php
 /*
-Реализуйте функцию compare, которая сравнивает переданных пользователей на основе идентификатора. Эта функция должна убедиться что переданные объекты - пользователи.
+Реализуйте класс App\Segment с двумя публичными свойствами beginPoint и endPoint. Определите в классе конструктор.
+Реализуйте функцию reverse, которая принимает на вход сегмент и возвращает новый, с точками добавленными в обратном порядке (begin меняется местами со end). Точки должны быть клонированы.
 */
-class User
+class Point
 {
-    public $id;
-    public $name;
+    public $x;
+    public $y;
+
+    public function __construct($x, $y)
+    {
+        $this->x = $x;
+        $this->y = $y;
+    }
 }
 
-
-function compare($user1, $user2)
+class Segment
 {
-   $checkUser1 = get_class($user1);
-   $checkUser2 = get_class($user2);
-
-   return $checkUser1 === $checkUser2 && $user1->id === $user2->id;      
+        public $beginPoint;
+        public $endPoint;
+    
+    public function __construct($beginPoint, $endPoint)
+    {
+       $this->beginPoint = $beginPoint;
+       $this->endPoint = $endPoint;
+    }
+}
+function reverse($segment)
+{
+    $cloned = clone $segment;
+    $cloned->beginPoint = clone $segment->endPoint;
+    $cloned->endPoint = clone $segment->beginPoint;
+    return $cloned;
 }
 
+$segment = new Segment(new Point(1, 10), new Point(11, -3));
+//print_r($segment);
+$reversedSegment = reverse($segment);
 
-$user1 = new User();
-$user1->id = 1;
-$user1->name = 'Petr';
-
-$user2 = new User();
-$user2->id = 1;
-$user2->name = 'Ignat';
-
-$user3 = new User();
-$user3->id = 2;
-
-print_r(compare($user1, $user2));
-print_r(compare($user1, $user3)); // => true
+print_r($reversedSegment->beginPoint); // => (11, -3)
+print_r($reversedSegment->endPoint); // => (1, 10)
