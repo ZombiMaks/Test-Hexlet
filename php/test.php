@@ -1,20 +1,12 @@
 <?php
 /*
-Реализуйте класс для работы с рациональными числами, включающую в себя следующие методы:
-
-Конструктор — принимает на вход числитель и знаменатель.
-Метод getNumer — возвращает числитель
-Метод getDenom — возвращает знаменатель
-Сложение add — складывает переданные дроби
-Вычитание sub — находит разность между двумя дробями
-Нормализацию делать не надо!
-
-Подобные абстракции, как правило, создаются неизменяемыми. Поэтому сделайте так, чтобы методы add и sub возвращали новое рациональное число, а не мутировали объект.
+Реализуйте функцию __toString, которая преобразует сегмент к строке в соответствии с примером ниже [(1, 10)]
 */
-class Rational
+
+class Point
 {
-    public $x;
-    public $y;
+    private $x;
+    private $y;
 
     public function __construct($x, $y)
     {
@@ -22,43 +14,33 @@ class Rational
         $this->y = $y;
     }
 
-    public function getNumer()
+    public function __toString()
     {
-        return $this->x;
+        return "({$this->x}, {$this->y})";
     }
-    public function getDenom()
-    {
-        return $this->y;
-    }
-
-    public function add($rat2)
-    {
-        $numer = ($this->getNumer() * $rat2->getDenom()) + ($this->getDenom() * $rat2->getNumer());
-        $denom = $this->getDenom() * $rat2->getDenom();
-        return new Rational($numer, $denom);
-    } 
-    
-    public function sub($rat2)
-    {
-        $numer = ($this->getNumer() * $rat2->getDenom()) - ($this->getDenom() * $rat2->getNumer());
-        $denom = $this->getDenom() * $rat2->getDenom();
-        return new Rational($numer, $denom);
-    }  
 }
 
-$rat1 = new Rational(3, 9);
-$rat1->getNumer(); // => 3
-$rat1->getDenom(); // => 9
+class Segment
+{
+    private $beginPoint;
+    private $endPoint;
 
-$rat2 = new Rational(10, 3);
+    public function __construct($beginPoint, $endPoint)
+    {
+        $this->beginPoint = $beginPoint;
+        $this->endPoint = $endPoint;
+    }
 
-$rat3 = $rat1->add($rat2); // => Абстракция для рационального числа 99/27
-print_r($rat3);
-$rat3->getNumer();         // => 99
-$rat3->getDenom();         // => 27
+    public function __toString()
+    {
+        return "[{$this->beginPoint}, {$this->endPoint}]";
+    }
+}
 
-$rat4 = $rat1->sub($rat2); // => Абстракция для рационального числа -81/27
-$rat4->getNumer();         // => -81
-$rat4->getDenom();
+$point1 = new Point(1, 10); 
+$point2 = new Point(11, -3);
+$segment1 = new Segment($point1, $point2);
+echo $segment1; // => [(1, 10), (11, -3)]
 
-print_r($rat4);// => 27
+//$segment2 = new Segment($point2, $point1);
+//print_r($segment2); // => [(11, -3), (1, 10)]
