@@ -1,46 +1,33 @@
 <?php
 /*
-Реализуйте функцию __toString, которая преобразует сегмент к строке в соответствии с примером ниже [(1, 10)]
+Реализуйте недостающие части класса Timer, который описывает собой таймер обратного отсчета. Необходимо дописать конструктор принимающий на вход три параметра: секунды, минуты (необязательный) и часы (необязательный). Конструктор должен подсчитать общее количество секунд для переданного времени и записать его в свойство secondsCount.
+
+Воспользуйтесь константой SEC_PER_MIN для перевода минут в секунды (через умножение)
+Реализуйте дополнительную константу SEC_PER_HOUR и воспользуйтесь ей для перевода часов в секунды
 */
 
-class Point
+class Timer
 {
-    private $x;
-    private $y;
+    const SEC_PER_MIN = 60;
+    const SEC_PER_HOUR = 3600;
 
-    public function __construct($x, $y)
+    public $secondsCount;
+
+    public function __construct($seconds, $minutes=null, $hours=null)
     {
-        $this->x = $x;
-        $this->y = $y;
+    $this->secondsCount = $seconds + ($minutes * self::SEC_PER_MIN) + ($hours * self::SEC_PER_HOUR); 
     }
 
-    public function __toString()
+    public function getLeftSeconds()
     {
-        return "({$this->x}, {$this->y})";
+        return $this->secondsCount;
+    }
+
+    public function tick()
+    {
+        $this->secondsCount--;
     }
 }
 
-class Segment
-{
-    private $beginPoint;
-    private $endPoint;
-
-    public function __construct($beginPoint, $endPoint)
-    {
-        $this->beginPoint = $beginPoint;
-        $this->endPoint = $endPoint;
-    }
-
-    public function __toString()
-    {
-        return "[{$this->beginPoint}, {$this->endPoint}]";
-    }
-}
-
-$point1 = new Point(1, 10); 
-$point2 = new Point(11, -3);
-$segment1 = new Segment($point1, $point2);
-echo $segment1; // => [(1, 10), (11, -3)]
-
-//$segment2 = new Segment($point2, $point1);
-//print_r($segment2); // => [(11, -3), (1, 10)]
+$timer = new Timer(8, 20, 8);
+print_r($timer->getLeftSeconds());
