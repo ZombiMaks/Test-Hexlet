@@ -6,28 +6,27 @@
 Реализуйте дополнительную константу SEC_PER_HOUR и воспользуйтесь ей для перевода часов в секунды
 */
 
-class Timer
+class Time
 {
-    const SEC_PER_MIN = 60;
-    const SEC_PER_HOUR = 3600;
+    private $h;
+    private $m;
 
-    public $secondsCount;
-
-    public function __construct($seconds, $minutes=null, $hours=null)
+    public static function fromString($time)
     {
-    $this->secondsCount = $seconds + ($minutes * self::SEC_PER_MIN) + ($hours * self::SEC_PER_HOUR); 
+        return new self(intval(date("h" , strtotime($time))),  intval(date("i" , strtotime($time))));
     }
 
-    public function getLeftSeconds()
+    public function __construct($h, $m)
     {
-        return $this->secondsCount;
+        $this->h = $h;
+        $this->m = $m;
     }
 
-    public function tick()
+    public function toString()
     {
-        $this->secondsCount--;
+        return "{$this->h}:{$this->m}";
     }
 }
 
-$timer = new Timer(8, 20, 8);
-print_r($timer->getLeftSeconds());
+$time = Time::fromString('3:8');
+print_r($time);
