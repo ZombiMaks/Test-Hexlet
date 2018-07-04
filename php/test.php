@@ -1,33 +1,31 @@
 <?php
 /*
-Реализуйте класс User, который создает пользователей. Конструктор класса принимает на вход два параметра: идентификатор и имя.
+Реализуйте класс Circle для описания кругов. У круга есть только одно свойство - его радиус. Реализуйте методы getArea и getCircumference, которые возвращают площадь и периметр круга соответственно.
 
-Реализуйте интерфейс Comparable для класса User. Сравнение пользователей происходит на основе их идентификатора.
+Площадь круга: πr2
+Длина окружности: 2*πR
 */
 
-interface Comparable
+class Circle
 {
-    public function compareTo($user);
-}
-class User implements Comparable
-{
-    private $id;
-    private $name;
+    private $radius;
 
-    public function __construct($id, $name)
+    function __construct($radius)
     {
-        $this->id = $id;
-        $this->name = $name;
+        $this->radius = $radius;
     }
 
-    public function compareTo($user)
+    function getArea()
     {
-        return $this->id == $user->id;
+        return pi() * ($this->radius ** 2);
     }
 
+    function getCircumference()
+    {
+        return 2 * pi() * $this->radius;
+    }
 }
 
-$user1 = new User(4, 'tolya');
-$user2 = new User(4, 'petya');
+$circle = new Circle(3);
 
-echo $user1->compareTo($user2); // false
+print_r($circle->getArea());
