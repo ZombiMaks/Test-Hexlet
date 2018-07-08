@@ -1,55 +1,51 @@
 <?php
 /*
-Реализуйте генератор рандомных чисел представленный классом Random. Интерфейс объекта включает в себя три функции:
+Реализуйте класс PassworValidator ориентируясь на тесты.
 
-Конструктор, принимает на вход seed, начальное число генератора псевдослучайных чисел.
-getNext - метод возврающающий новое случаное число
-reset - метод сбрасывающий генератор на начальное значение
+Этот валидатор поддерживает следующие опции:
 
-Простейший способ реализовать случайные числа это линейный конгруэнтный метод seed = (a * seed + c) % m; 
-$m = 2147483647;
-$a = 16807;
-$c = 0;
+minLength (по-умолчанию 8) - минимальная длина пароля
+containNumbers (по-умолчанию false) - требование содержать хотя бы одну цифру
+Массив ошибок в ключах содержит название опции, а в значении текст указывающий на ошибку (тексты можно подсмотреть в тестах)
 */
 
-class Random
+class PasswordValidator
 {
-    const M = 2147483647;
-    const A = 16807;
-    const C = 0;
-    private $seed;
-    private $newSeed;
+    public $options = [
+        'minLength' => 8,
+        'containNumbers' => false
+    ];
 
-    function __construct($seed)
+    public function __construct(array $options = [])
     {
-        $this->seed = $seed;
-        $this->newSeed = $seed;
+        $this->options = array_merge($this->options, $options);
     }
 
-    function getNext()
+    public function validate(string $password): array
     {
-    
-        $this->seed = (self::A * $this->seed + self::C) % self::M;
-        return $this->seed . " ";
-      
-    }
+        $errors = [];
+        if (mb_strlen($password) < $this->options['minLength']) {
+            $errors['minLength'] = 'too small';
+        }
 
-    function reset()
+        if ($this->options['containNumbers']) {
+            if (!$this->hasNumber($password)) {
+                $errors['containNumbers'] = 'should contain at least one number';
+            }
+        }
+
+        return $errors;
+    }
+    private function hasNumber($subject)
     {
-        $this->seed = $this->newSeed;
+        return strpbrk($subject, '1234567890') !== false;
     }
 }
 
-$seq = new Random(100);
-echo $result1 = $seq->getNext();
-echo $result2 = $seq->getNext();
+$validator = new PasswordValidator();
+print_r($validator->validate('qwertyui'));
+print_r($validator->validate('qwerty'));
 
-echo $result1 != $result2; // => true
-
-echo $seq->reset();
-
-echo $result21 = $seq->getNext();
-echo $result22 = $seq->getNext();
-
-echo $result1 == $result21; // => true
-echo $result2 == $result22; // => true
+$validator = new PasswordValidator(['containNumbers' => true]);print_r($validator->validate('qwertya3sdf'));
+print_r($validator->validate('qwerty'));
+print_r($validator->validate('q23ty'));
