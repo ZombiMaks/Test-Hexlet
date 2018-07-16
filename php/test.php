@@ -1,36 +1,53 @@
 <?php
 /*
-Реализуйте класс DeckOfCards который описывает собой колоду карт и умеет ее мешать.
-
-Конструктор класса принимает на вход массив в котором перечислены номиналы карт в единственном экземпляре, например, [6, 7, 8, 9, 10, 'king']. Затем, с помощью, метода getShuffled можно получить полную колоду (то есть такую колоду, в которой каждая карта встречается 4 раза. Для простоты не учитываем масть) в виде массива отсортированную случайным образом
+Реализуйте функцию normalize которая принимает на вход список городов, производит внутри некоторые преобразования и возвращает структуру определенного формата.
 */
 
-class DeckOfCards
+function normalize($raw)
 {
-    private $carts = array();
-    private $cart;
-
-    public function __construct($carts){
-        $colection = [];
-       foreach($carts as $value){
-           $colection[] = $value;
-           $colection[] = $value;
-           $colection[] = $value;
-           $colection[] = $value;
-       }
-        $this->cart =  $colection;
-        $this->carts = $carts;
-    }
-
-    public function getShuffled()
-    {
-       $colection = $this->cart;
-       shuffle($colection);
-       return $colection;  
-    }
+  $country = array_map(function ($coun) 
+  {
+    return trim(strtolower($coun['country']));
+  }, $raw);
+  $countrys = array_unique($country);
+  $result = [];
+  for ($i = 0; $i<count($raw); $i++){
+      if (trim(strtolower($raw[$i]['country'])) == $countrys[0]){
+        $result[$countrys[0]][] = trim(strtolower($raw[$i]['name']));
+        $result[$countrys[0]] = array_unique($result[$countrys[0]]);
+        sort($result[$countrys[0]]);
+      }else{
+        $result[$countrys[1]][] = trim(strtolower($raw[$i]['name']));
+        $result[$countrys[1]] = array_unique($result[$countrys[1]]);
+        sort($result[$countrys[1]]);
+      }
+      ksort($result);
+  }
+  return $result;
 }
 
+$raw = [
+  [
+      'name' => 'istambul',
+      'country' => 'turkey'
+  ],
+  [
+      'name' => 'Moscow ',
+      'country' => ' Russia'
+  ],
+  [
+      'name' => 'iStambul',
+      'country' => 'tUrkey'
+  ],
+  [
+      'name' => 'antalia',
+      'country' => 'turkeY '
+  ],
+  [
+      'name' => 'samarA',
+      'country' => '  ruSsiA'
+  ],
+];
 
-$deck = new DeckOfCards([2, 3, 5]);
-print_r($deck->getShuffled()); // [2, 3, 3, 3, 2, 3, 2, 2]
-print_r($deck->getShuffled()); // [3, 3, 2, 2, 2, 3, 3, 2]
+$actual = normalize($raw);
+print_r($actual);
