@@ -1,53 +1,60 @@
 <?php
 /*
-Реализуйте функцию normalize которая принимает на вход список городов, производит внутри некоторые преобразования и возвращает структуру определенного формата.
+Booking — процесс бронирования чего-либо. В интернете существует множество сайтов, предлагающих бронирование машин, квартир, домов, самолетов и многого другого. Несмотря на то, что такие сайты предлагают разные услуги, букинг везде работает почти идентично. Выбираются нужные даты и, если они свободны, то производится бронирование.
+
+Реализуйте класс Booking, который позволяет бронировать номер отеля на определенные даты. Единственный интерфейс класса - функция book, которая принимает на вход две даты в текстовом формате. Если бронироавние возможно, то метод возвращает true и выполняет бронирование (даты записываются во внутреннее состояние объекта).
+
+Подсказки
+По обычаям гостиничного сервиса время заселения в номер — после полудня первого дня, а выселения — до полудня последнего дня. Конкретные часы варьируются в разных отелях. Но в данной практике это не важно, главное понять принцип, по которому указываются даты
 */
 
-function normalize($raw)
-{
-  $country = array_map(function ($coun) 
-  {
-    return trim(strtolower($coun['country']));
-  }, $raw);
-  $countrys = array_unique($country);
-  $result = [];
-  for ($i = 0; $i<count($raw); $i++){
-      if (trim(strtolower($raw[$i]['country'])) == $countrys[0]){
-        $result[$countrys[0]][] = trim(strtolower($raw[$i]['name']));
-        $result[$countrys[0]] = array_unique($result[$countrys[0]]);
-        sort($result[$countrys[0]]);
-      }else{
-        $result[$countrys[1]][] = trim(strtolower($raw[$i]['name']));
-        $result[$countrys[1]] = array_unique($result[$countrys[1]]);
-        sort($result[$countrys[1]]);
-      }
-      ksort($result);
-  }
-  return $result;
+require 'vendor/autoload.php';
+use Carbon\Carbon;
+use Carbon\CarbonPeriod;
+
+class Booking
+{ 
+   public function book($dateStart, $dateEnd)
+    {
+        // проверяем или бронь больше одного дня
+        if ($dateStart == $dateEnd){
+            return false;
+        }
+        // создаем бронь 
+        $period = CarbonPeriod::create($dateStart, $dateEnd);
+        // создаем массив из полученного периода брони
+        $dateArray = implode(', ', $period->toArray());
+        $dateArray = explode(', ', $dateArray);
+        // создаем статическую переменную для записи чисел забронированных дней 
+        static $dateArrayResult = [];
+        // проверяем на пустоту и записываем первый период брони (первый вызов функции)
+        if (empty($dateArrayResult)){
+            $dateArrayResult = $dateArray;
+            // возвращаем true так-как массив пуст и все места свободны
+            return true;
+        }
+        // сверяем полученные числа брони с уже забронированными числами
+        $date = array_diff($dateArray, $dateArrayResult);
+        // проверяем чтобы не было больше 1 совпадения, так-как можно еще занять только первый день до обеда или последний после обеда
+        if (count($dateArray) - 1 <= count($date)){
+            foreach ($date as $value){
+                // добавляем забронированные дни
+                $dateArrayResult[] = $value;
+                // сортируем для удобства
+                sort($dateArrayResult);
+            }
+            return true;
+        }else{
+            return false;     
+        }
+    }
+
 }
 
-$raw = [
-  [
-      'name' => 'istambul',
-      'country' => 'turkey'
-  ],
-  [
-      'name' => 'Moscow ',
-      'country' => ' Russia'
-  ],
-  [
-      'name' => 'iStambul',
-      'country' => 'tUrkey'
-  ],
-  [
-      'name' => 'antalia',
-      'country' => 'turkeY '
-  ],
-  [
-      'name' => 'samarA',
-      'country' => '  ruSsiA'
-  ],
-];
-
-$actual = normalize($raw);
-print_r($actual);
+$booking = new Booking();
+var_dump($booking->book('11-11-2008', '13-11-2008')); // true
+var_dump($booking->book('12-11-2008', '12-11-2008')); // false
+var_dump($booking->book('10-11-2008', '12-11-2008')); // false
+var_dump($booking->book('12-11-2008', '14-11-2008')); // false
+var_dump($booking->book('10-11-2008', '11-11-2008')); // true
+var_dump($booking->book('13-11-2008', '14-11-2008')); // true
