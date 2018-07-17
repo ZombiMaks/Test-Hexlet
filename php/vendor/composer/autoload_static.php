@@ -8,6 +8,7 @@ class ComposerStaticInite5c05a9e9d21ab82b3e16ce901c791f6
 {
     public static $files = array (
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
+        '65fec9ebcfbb3cbb4fd0d519687aea01' => __DIR__ . '/..' . '/danielstjules/stringy/src/Create.php',
         '4ceedf97791d93203e20d2cdee63c4d8' => __DIR__ . '/..' . '/funct/funct/src/Collection.php',
         '3fa95b6de8b4ba809a4086bd187dc285' => __DIR__ . '/..' . '/funct/funct/src/General.php',
         '9a6e6879c844337a8d58143b6e0512ae' => __DIR__ . '/..' . '/funct/funct/src/Invoke.php',
@@ -20,6 +21,7 @@ class ComposerStaticInite5c05a9e9d21ab82b3e16ce901c791f6
         array (
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Component\\Translation\\' => 30,
+            'Stringy\\' => 8,
         ),
         'F' => 
         array (
@@ -35,6 +37,10 @@ class ComposerStaticInite5c05a9e9d21ab82b3e16ce901c791f6
         'Symfony\\Component\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
+        ),
+        'Stringy\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/danielstjules/stringy/src',
         ),
         'Funct\\' => 
         array (

@@ -8,6 +8,7 @@
     ],
     "require": {
         "funct/funct": "^1.4",
-        "nesbot/carbon": "^1.32"
+        "nesbot/carbon": "^1.32",
+        "danielstjules/stringy": "~3.1.0"
     }
 }
